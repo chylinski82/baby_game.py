@@ -545,19 +545,19 @@ def random_image():
             stop = True'''
 
 def onkeypress(event):
-        global stop
-        global current_speed_index
-        global score
-        #if event.name == 'space' or 'q' or 'w' or 'e' or 'r' or 't' or 'tab' or 'capslock' or 'a' or 's' or 'd' or 'f' or 'g' or 'z' or 'x' or 'c' or 'v' or '\\' or 'lshift':
-        if event.name:
-            if image == bulls_eye:
-                if current_speed_index != 0:
-                    current_speed_index = current_speed_index - 1
-                    score = score + 15 - current_speed_index
-            else:
-                if current_speed_index !=9:
-                    current_speed_index = current_speed_index + 1  
-            return current_speed_index, score
+    global stop
+    global current_speed_index
+    global score
+    #if event.name == 'space' or 'q' or 'w' or 'e' or 'r' or 't' or 'tab' or 'capslock' or 'a' or 's' or 'd' or 'f' or 'g' or 'z' or 'x' or 'c' or 'v' or '\\' or 'lshift':
+    if event.name:
+        if image == bulls_eye:
+            if current_speed_index != 0:
+                current_speed_index = current_speed_index - 1
+                score = score + 15 - current_speed_index
+        else:
+            if current_speed_index !=9:
+                current_speed_index = current_speed_index + 1  
+        return current_speed_index, score
 
 def game():
     global current_speed_index
@@ -572,7 +572,7 @@ def game():
         time.sleep(level[current_speed_index])
         os.system('clear')
         time.sleep(0.02)
-        keyboard.on_press(onkeypress)
+        keyboard.on_release(onkeypress)
         print(f'speed: {game_speed}          score: {score}          time: {datetime.now() - start}')
        
 single_player()
