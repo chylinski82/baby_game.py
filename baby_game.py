@@ -99,6 +99,35 @@ smiley = '''
 
 '''
 
+single_player_intro = '''
+
+
+
+                        o O O   / __|    |_ _|   | \| |    / __|    | |      | __|                      
+                    o        \__ \     | |    | .` |   | (_ |    | |__    | _|                       
+                    TS__[O]   |___/    |___|   |_|\_|    \___|    |____|   |___|                      
+                    {======| _|"""""| _|"""""| _|"""""| _|"""""| _|"""""| _|"""""|                     
+                    ./o--000' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-'                     
+                                                    ___     _        ___    __   __    ___      ___   
+                        o O O     o O O     o O O    | _ \   | |      /   \   \ \ / /   | __|    | _ \  
+                    o         o         o         |  _/   | |__    | - |    \ V /    | _|     |   /  
+                    TS__[O]   TS__[O]   TS__[O]   _|_|_    |____|   |_|_|    _|_|_    |___|    |_|_\  
+                    {======|  {======|  {======| _| """ | _|"""""| _|"""""| _| """ | _|"""""| _|"""""| 
+                    ./o--000' ./o--000' ./o--000' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' "`-0-0-' 
+
+                                                                                             __                            
+                                                                                            /\ \                           
+ _____    _ __     __     ____    ____                __       ___     __  __               \ \ \/'\       __    __  __    
+/\ '__`\ /\`'__\ /'__`\  /',__\  /',__\             /'__`\   /' _ `\  /\ \/\ \               \ \ , <     /'__`\ /\ \/\ \   
+\ \ \L\ \\ \ \/ /\  __/ /\__, `\/\__, `\           /\ \L\.\_ /\ \/\ \ \ \ \_\ \               \ \ \\`\  /\  __/ \ \ \_\ \  
+ \ \ ,__/ \ \_\ \ \____\\/\____/\/\____/           \ \__/.\_\\ \_\ \_\ \/`____ \               \ \_\ \_\\ \____\ \/`____ \ 
+  \ \ \/   \/_/  \/____/ \/___/  \/___/             \/__/\/_/ \/_/\/_/  `/___/> \               \/_/\/_/ \/____/  `/___/> \
+   \ \_\                                                                   /\___/                                    /\___/
+    \/_/                                                                   \/__/                                     \/__/ 
+
+'''
+
+
 crosshair = '''
 ###############################################################################################################
 ###############################################################################################################
@@ -115,9 +144,9 @@ crosshair = '''
 ########                                                                                               ########
 ########                                    %%%                      %%%                               ########
 ########                                                                                               ########
-########                                  %%%                         %%%                              ########
-########                                                                                               ########
-########                                  %%%                         %%%                              ########
+########                                  %%%          ◉  ◉           %%%                              ########
+########                                                ||                                             ########
+########                                  %%%         '----'          %%%                              ########
 ########                                                                                               ########
 ########                                  %%%                        %%%                               ########
 ########                                                                                               ########
@@ -134,7 +163,6 @@ crosshair = '''
 ########                                                                                               ########
 ###############################################################################################################
 ###############################################################################################################
-
 '''
 
 bulls_eye = '''
@@ -472,9 +500,10 @@ miss_8 = '''
 
 stop = False #continue to play until
 image = crosshair
-level = [0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+level = [0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 current_speed_index = 5
 score = 0
+
 
 def print_welcome():
     for x in range(0, 1):
@@ -507,19 +536,15 @@ def how_many_players():
 
 players = how_many_players()
 
-def single_player():
-    os.system('clear')
-    time.sleep(1.0)
-    game()
 
 #generating random image, 2 in 10 (1 in 5) chance of a "bulls_eye" image.   
 def random_image():
     global image
     r = randrange(10)
     if r == 0:
-        image = bulls_eye
+        image = crosshair
     elif r == 1:
-        image = bulls_eye
+        image = crosshair
     elif r == 2:
         image = miss_1
     elif r == 3:
@@ -550,7 +575,8 @@ def onkeypress(event):
     global score
     #if event.name == 'space' or 'q' or 'w' or 'e' or 'r' or 't' or 'tab' or 'capslock' or 'a' or 's' or 'd' or 'f' or 'g' or 'z' or 'x' or 'c' or 'v' or '\\' or 'lshift':
     if event.name:
-        if image == bulls_eye:
+        if image == crosshair:
+            print(bulls_eye)
             if current_speed_index != 0:
                 current_speed_index = current_speed_index - 1
                 score = score + 15 - current_speed_index
@@ -559,21 +585,31 @@ def onkeypress(event):
                 current_speed_index = current_speed_index + 1  
         return current_speed_index, score
 
+
 def game():
     global current_speed_index
     global score
     global high_score
     global stop
-    start = datetime.now()
-    duration = timedelta(seconds=60)
-    while datetime.now() - start < duration:
-        game_speed = 10 - current_speed_index 
-        random_image()
-        time.sleep(level[current_speed_index])
-        os.system('clear')
-        time.sleep(0.02)
-        keyboard.on_release(onkeypress)
-        print(f'speed: {game_speed}          score: {score}          time: {datetime.now() - start}')
-       
-single_player()
+    global players
+    os.system('clear')
+    time.sleep(0.1)
+    if players == 1 or 2 or 3:
+        for play in range(0, players):
+            start = datetime.now()
+            duration = timedelta(seconds=60)
+            while datetime.now() - start < duration:
+                game_speed = 10 - current_speed_index 
+                random_image()
+                time.sleep(level[current_speed_index])
+                os.system('clear')
+                time.sleep(0.02)
+                keyboard.on_release(onkeypress)
+                print(f'speed: {game_speed}         score: {score}          time: {datetime.now() - start}')
+            print(f'final score: {score}')
+            current_speed_index = 5
+            score = 0
+            time.sleep(1.0)
+
+game()
 
